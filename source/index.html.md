@@ -2,238 +2,143 @@
 title: API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - ruby
-  - python
   - javascript
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
+  - <a href='tipser.com'>Visit Tipser page</a>
   - <a href='https://github.com/lord/slate'>Documentation Powered by Slate</a>
 
 includes:
-  - errors
+  - rest-api.md
 
 search: true
 ---
 
-# Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+#Tipser Script SDK
 
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+The Tipser SDK is a modular version of the Tipser script that provides only the core functionality necessary for integration with Tipser, specifically built for customers who have their own development resources and plan to build their shopping experience on their own.
+## Instalation
 
-This example API documentation page was created with [Slate](https://github.com/lord/slate). Feel free to edit it and use it as a base for your own API's documentation.
+###Using npm or yarn
+You can add the Tipser SDK to your project by adding it through npm or yarn.
 
-# Authentication
+**Yarn:** 
 
-> To authorize, use this code:
+`yarn add @tipser/tipser-sdk`
 
-```ruby
-require 'kittn'
+**NPM:**
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
+`npm install --save @tipser/tipser-sdk`
 
-```python
-import kittn
 
-api = kittn.authorize('meowmeowmeow')
-```
+Package instructions: [https://www.npmjs.com/package/@tipser/tipser-sdk](https://www.npmjs.com/package/@tipser/tipser-sdk)
 
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
+###Using a script tag on your page
+
+> Add a script to your page:
 
 ```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
+<script src="https://tipser.com/widget/sdk.js"></script>
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
+> You may also want to use the test version of the Tipser SDK (to simulate the payment without actual money transfer)
 
 ```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
+<script src="https://t3-stage.tipser.com/widget/sdk.js"></script>
 ```
 
-> The above command returns JSON structured like this:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
-
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/api/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+You need to add a script to your HTML source.
 
 <aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+Congratulations! Now Tipser is part of your website
 </aside>
 
-## Get a Specific Kitten
+##Initialization
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
+To initialize you need to create a tipser const.
 
 ```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+const tipser = TipserSDK(posId:string, options: object): TipserSDK;
 ```
+*Arguments:*
 
-> The above command returns JSON structured like this:
+**posId** (string) - id of shop's account in Tipser (required)
 
-```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
-```
+**options** (object) - an object of options (optional). The same options are supported as for Tipser Widget (docs), except of userid option that is provided as a first argument here
 
-This endpoint retrieves a specific kitten.
+*Returns:*
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+Initialized Tipser SDK object that can be used to perform API calls further in this document.
 
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
+*Example:*
 
 ```javascript
-const kittn = require('kittn');
+var tipser = TipserSDK("5aa12d639d25800ff0e56fc5", {primaryColor: "yellow"});
+```
+The example connects Tipser SDK with Burda shop and sets primary color to yellow.
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
+##Customizing Tipser Environment
+By default, Tipser SDK connects to production Tipser environment. Yet if testing environment is preferred (e.g. in order to do test purchase), then it can be customized with env parameter in TipserSDK options, which accepts the following values:
+
+> Example:
+
+```javascript
+var tipser = TipserSDK("5aa12d639d25800ff0e56fc5", {env: "stage"});
 ```
 
-> The above command returns JSON structured like this:
+* **prod** or production
+* **stage** or staging
+* **dev** or development
 
-```json
-{
-  "id": 2,
-  "deleted" : ":("
-}
+
+##Parameters for dialog customization
+Sometimes Tipser dialogue styling and functionality needs to be customized. It is possible with modalUi parameters group.
+
+> Complete example of dialog customizations:
+
+```javascript
+    var tipserOptions = {
+       modalUi: {
+          hideSearchIcon: true,
+          hideFavouritesIcon: true,
+          hideCartIcon: false,
+          hideMoreIcon: true,
+          hideSimilarProducts: false,
+          useCustomCss: true
+       }
+        });
 ```
 
-This endpoint deletes a specific kitten.
+Hiding icons on menu bar
 
-### HTTP Request
+The following parameters under modalUi can be used to selectively hide tipser icons on the dialog menu bar: 
 
-`DELETE http://example.com/kittens/<ID>`
+* hideSearchIcon 
+* hideFavouritesIcon
+* hideCartIcon
+* hideMoreIcon
 
-### URL Parameters
+[![](widget1.png)](/images/widget1.png)
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+Hiding Similar Products Module
 
+Similarly, hideSimilarProducts parameter, if set to **true**, can be used to hide Similar Products Module on product page
+
+[![](widget2.png)](/images/widget2.png)
+
+##Custom CSS
+
+If there is a need to use custom css stylesheet, it may be activated in two steps:
+
+```javascript
+var tipserOptions = {
+            modalUi: {
+               useCustomCss: true
+            }
+    });
+
+```
+1. set **useCustomCss** parameter to true
+    
+2. Send the custom css stylesheet to Tipser administrator in order to be uploaded to your account.
